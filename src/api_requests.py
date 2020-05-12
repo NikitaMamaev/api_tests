@@ -16,7 +16,7 @@ urllib3.disable_warnings()
 
 
 def send_request(
-    method: str = "get",
+    method: str = 'get',
     url: str = f"{settings.URL}{settings.API_HANDLER}",
     data: Optional[dict] = None
 ) -> str:
@@ -43,6 +43,4 @@ def send_request(
         f"response = {response.content}; status_code = {response.status_code}"
     )
 
-    result = response.json()
-
-    return result
+    return response.json()
