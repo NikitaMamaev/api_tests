@@ -10,4 +10,5 @@ sh ./test.sh
 * `PyHamcrest`
 * `pylint`
 * `pytest`
+* `python-dateutil`
 * `requests`
