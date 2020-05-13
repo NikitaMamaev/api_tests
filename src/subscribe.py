@@ -26,7 +26,7 @@ def create_subscription(subcription: Subscription) -> dict:
     return response
 
 
-def delete_subscriptions():
+def delete_subscriptions() -> dict:
     """
     Delete all subscriptions
     """

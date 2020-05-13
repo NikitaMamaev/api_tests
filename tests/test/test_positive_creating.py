@@ -8,11 +8,10 @@ import pytest
 
 import settings
 from src.subscribe import create_subscription
-from tests.data.subscription import positive
+from tests.data.subscription import positive, zero_time
 from utils.api_requests import send_request
 
 
-@pytest.mark.api
 @pytest.mark.creating
 @pytest.mark.positive
 def test_creating_with_correct_data(create_positive_subscription):
@@ -41,7 +40,33 @@ def test_creating_with_correct_data(create_positive_subscription):
     )
 
 
-@pytest.mark.api
+@pytest.mark.creating
+@pytest.mark.positive
+def test_creating_with_zero_time(create_subscription_with_zero_time):
+    """
+    Creating with zero time
+    """
+
+    subscription_list = send_request()
+
+    hc.assert_that(
+        actual=subscription_list,
+        matcher=hc.has_item(hc.has_entries({
+            'email': zero_time.email,
+            'name': zero_time.name
+        })),
+        reason="New subscription not added at list"
+    )
+
+    hc.assert_that(
+        actual=subscription_list[0]['created_at'],
+        matcher=hc.equal_to(
+            subscription_list[0]['expired_at']
+        ),
+        reason="Subscription time is not equal to zero"
+    )
+
+
 @pytest.mark.creating
 @pytest.mark.positive
 def test_sixth_subscription_creating(fill_subscriptions_list):

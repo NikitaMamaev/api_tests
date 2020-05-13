@@ -10,14 +10,26 @@ class Subscription:
     """
     Subscription parameters
     """
+
     email: str = ""
     name: str = ""
     time: str = "1d"
 
 
-positive = Subscription(
-    email="positive@example.com",
-    name="Positive Name"
+empty_email = Subscription(
+    email="",
+    name="Empty Email"
+)
+
+empty_name = Subscription(
+    email="empty_name@example.com",
+    name=""
+)
+
+empty_time = Subscription(
+    email="empty_time@example.com",
+    name="Empty Time",
+    time=""
 )
 
 negative_email = Subscription(
@@ -37,20 +49,9 @@ negative_time = Subscription(
     time="incorrect time"
 )
 
-empty_email = Subscription(
-    email="",
-    name="Empty Email"
-)
-
-empty_name = Subscription(
-    email="empty_name@example.com",
-    name=""
-)
-
-empty_time = Subscription(
-    email="empty_time@example.com",
-    name="Empty Time",
-    time=""
+positive = Subscription(
+    email="positive@example.com",
+    name="Positive Name"
 )
 
 zero_time = Subscription(

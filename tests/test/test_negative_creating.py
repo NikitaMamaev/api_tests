@@ -7,40 +7,11 @@ import pytest
 
 from src.subscribe import create_subscription
 from tests.data.subscription import \
-    empty_email, empty_name, empty_time, zero_time,\
+    empty_email, empty_name, empty_time,\
     negative_email, negative_name, negative_time
 from utils.api_requests import send_request
 
 
-@pytest.mark.api
-@pytest.mark.creating
-@pytest.mark.negative
-def test_creating_with_zero_time(create_subscription_with_zero_time):
-    """
-    Creating with zero time
-    """
-
-    subscription_list = send_request()
-
-    hc.assert_that(
-        actual=subscription_list,
-        matcher=hc.has_item(hc.has_entries({
-            'email': zero_time.email,
-            'name': zero_time.name
-        })),
-        reason="New subscription not added at list"
-    )
-
-    hc.assert_that(
-        actual=subscription_list[0]['created_at'],
-        matcher=hc.equal_to(
-            subscription_list[0]['expired_at']
-        ),
-        reason="Subscription time is not equal to zero"
-    )
-
-
-@pytest.mark.api
 @pytest.mark.creating
 @pytest.mark.negative
 def test_creating_with_empty_email(clean):
@@ -73,7 +44,6 @@ def test_creating_with_empty_email(clean):
     )
 
 
-@pytest.mark.api
 @pytest.mark.creating
 @pytest.mark.negative
 def test_creating_with_empty_name(clean):
@@ -106,7 +76,6 @@ def test_creating_with_empty_name(clean):
     )
 
 
-@pytest.mark.api
 @pytest.mark.creating
 @pytest.mark.negative
 def test_creating_with_empty_time(clean):
@@ -139,7 +108,6 @@ def test_creating_with_empty_time(clean):
     )
 
 
-@pytest.mark.api
 @pytest.mark.creating
 @pytest.mark.negative
 def test_creating_with_negative_email(clean):
@@ -172,7 +140,6 @@ def test_creating_with_negative_email(clean):
     )
 
 
-@pytest.mark.api
 @pytest.mark.creating
 @pytest.mark.negative
 def test_creating_with_nagative_name(clean):
@@ -205,7 +172,6 @@ def test_creating_with_nagative_name(clean):
     )
 
 
-@pytest.mark.api
 @pytest.mark.creating
 @pytest.mark.negative
 def test_creating_with_negative_time(clean):
