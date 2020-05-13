@@ -12,7 +12,7 @@ from utils.api_requests import send_request
 
 
 @pytest.fixture(scope='function')
-def fill_subscriptions_list(request):
+def fill_subscriptions_list(request, clean):
     """
     Create five subscriptions before test
     """
@@ -30,5 +30,3 @@ def fill_subscriptions_list(request):
         matcher=hc.has_length(settings.LIST_LENGTH),
         reason="The list is not full"
     )
-
-    request.addfinalizer(delete_subscriptions)

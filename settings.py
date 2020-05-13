@@ -1,9 +1,9 @@
 """
 Constants
 """
+LOCAL_IP = "192.168.0.3"
 
-
-URL = "http://192.168.0.3:4000"
+URL = f"http://{LOCAL_IP}:4000"
 
 API_HANDLER = "/subscriptions"
 UI_HANDLER = "/ui"

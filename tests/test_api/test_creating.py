@@ -23,12 +23,6 @@ def test_positive_creating(create_positive_subscription):
 
     hc.assert_that(
         actual=send_request(),
-        matcher=hc.has_length(1),
-        reason="Incorrect length of the list"
-    )
-
-    hc.assert_that(
-        actual=send_request(),
         matcher=hc.has_item(hc.has_entries({
             'email': positive.email,
             'name': positive.name
@@ -77,33 +71,11 @@ def test_create_sixth_subscription(fill_subscriptions_list):
         reason="First subscription has not left the list"
     )
 
-@pytest.mark.api
-@pytest.mark.creating
-@pytest.mark.positive
-def test_creating_with_empty_name(create_subscription_with_empty_name):
-    """
-    Create subscription with empty name
-    """
-
-    hc.assert_that(
-        actual=send_request(),
-        matcher=hc.has_length(1),
-        reason="Incorrect length of the list"
-    )
-
-    hc.assert_that(
-        actual=send_request(),
-        matcher=hc.has_item(hc.has_entries({
-            'email': empty_name.email,
-            'name': empty_name.name
-        })),
-        reason="New subscription not added at list"
-    )
 
 @pytest.mark.api
 @pytest.mark.creating
 @pytest.mark.negative
-def test_creating_with_empty_email():
+def test_creating_with_empty_email(clean):
     """
     Try to create subscription with empty email
     """
@@ -115,7 +87,7 @@ def test_creating_with_empty_email():
         matcher=hc.has_entries({
             "error": hc.all_of(
                 hc.contains_string("ValidationError"),
-                hc.contains_string("Invalid email address")
+                hc.matches_regexp(r"Invalid.*email")
             )
         }),
         reason="ValidationError was expected"
@@ -132,12 +104,79 @@ def test_creating_with_empty_email():
         reason="There is subscription with empty email in the list"
     )
 
+
 @pytest.mark.api
 @pytest.mark.creating
 @pytest.mark.negative
-def test_creating_with_negative_email():
+def test_creating_with_empty_name(clean):
     """
-    Try to create subscription with negative email
+    Try to create subscription with empty name
+    """
+
+    response = create_subscription(empty_name)
+
+    hc.assert_that(
+        actual=response,
+        matcher=hc.has_entries({
+            "error": hc.all_of(
+                hc.contains_string("ValidationError"),
+                hc.matches_regexp(r"Invalid.*name")
+            )
+        }),
+        reason="ValidationError was expected"
+    )
+
+    hc.assert_that(
+        actual=send_request(),
+        matcher=hc.not_(hc.has_item(
+            hc.has_entries({
+                'email': empty_name.email,
+                'name': empty_name.name,
+            })
+        )),
+        reason="There is subscription with empty name in the list"
+    )
+
+
+@pytest.mark.api
+@pytest.mark.creating
+@pytest.mark.negative
+def test_creating_with_empty_time(clean):
+    """
+    Try to create subscription with empty time
+    """
+
+    response = create_subscription(empty_time)
+
+    hc.assert_that(
+        actual=response,
+        matcher=hc.has_entries({
+            "error": hc.all_of(
+                hc.contains_string("ValidationError"),
+                hc.matches_regexp(r"Invalid.*time")
+            )
+        }),
+        reason="ValidationError was expected"
+    )
+
+    hc.assert_that(
+        actual=send_request(),
+        matcher=hc.not_(hc.has_item(
+            hc.has_entries({
+                'email': empty_time.email,
+                'name': empty_time.name,
+            })
+        )),
+        reason="There is subscription with empty time in the list"
+    )
+
+
+@pytest.mark.api
+@pytest.mark.creating
+@pytest.mark.negative
+def test_creating_with_negative_email(clean):
+    """
+    Try to create subscription with incorrect email
     """
 
     response = create_subscription(negative_email)
@@ -147,7 +186,7 @@ def test_creating_with_negative_email():
         matcher=hc.has_entries({
             "error": hc.all_of(
                 hc.contains_string("ValidationError"),
-                hc.contains_string("Invalid email address")
+                hc.matches_regexp(r"Invalid.*email")
             )
         }),
         reason="ValidationError was expected"
@@ -161,5 +200,38 @@ def test_creating_with_negative_email():
                 'name': negative_email.name,
             })
         )),
-        reason="There is subscription with incorrect data in the list"
+        reason="There is subscription with incorrect email in the list"
+    )
+
+
+@pytest.mark.api
+@pytest.mark.creating
+@pytest.mark.negative
+def test_creating_with_negative_time(clean):
+    """
+    Try to create subscription with incorrect time
+    """
+
+    response = create_subscription(negative_time)
+
+    hc.assert_that(
+        actual=response,
+        matcher=hc.has_entries({
+            "error": hc.all_of(
+                hc.contains_string("ValidationError"),
+                hc.matches_regexp(r"Invalid.*email")
+            )
+        }),
+        reason="ValidationError was expected"
+    )
+
+    hc.assert_that(
+        actual=send_request(),
+        matcher=hc.not_(hc.has_item(
+            hc.has_entries({
+                'email': negative_time.email,
+                'name': negative_time.name,
+            })
+        )),
+        reason="There is subscription with incorrect time in the list"
     )
