@@ -5,6 +5,7 @@ Subscribe creating tests
 import hamcrest as hc
 import pytest
 
+import settings
 from src.subscribe import create_subscription
 from tests.data.subscribe import positive
 from utils.api_requests import send_request
@@ -37,6 +38,12 @@ def test_create_sixth_subscription(fill_subscriptions_list):
     Sixth subscription creating test
     """
 
+    hc.assert_that(
+        actual=send_request(),
+        matcher=hc.has_length(settings.LIST_LENGTH),
+        reason="The list is not full"
+    )
+
     create_subscription(positive)
 
     subscription_list = send_request()
@@ -54,7 +61,7 @@ def test_create_sixth_subscription(fill_subscriptions_list):
 
     hc.assert_that(
         actual=subscription_list,
-        matcher=hc.has_length(5),
+        matcher=hc.has_length(settings.LIST_LENGTH),
         reason="Wrong length of the list"
     )
 
