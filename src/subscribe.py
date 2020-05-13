@@ -2,11 +2,11 @@
 Subsciption creating and deleting methods
 """
 
-from tests.data.subscribe import Subscribe
+from tests.data.subscription import Subscription
 from utils.api_requests import send_request
 
 
-def create_subscription(subcription: Subscribe) -> dict:
+def create_subscription(subcription: Subscription) -> dict:
     """
     Create subscription
     :param subcription: subscription data

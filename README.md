@@ -5,6 +5,12 @@
 sh ./test.sh
 ```
 
+или
+
+```bash
+PYTHONPATH=${PWD} pytest -v tests/*
+```
+
 ## Необходимые пакеты:
 
 * `PyHamcrest`

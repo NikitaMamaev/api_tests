@@ -8,7 +8,7 @@ import pytest
 
 import settings
 from src.subscribe import create_subscription
-from tests.data.subscribe import positive
+from tests.data.subscription import positive
 from utils.api_requests import send_request
 
 

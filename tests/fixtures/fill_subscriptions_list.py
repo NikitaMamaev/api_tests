@@ -7,7 +7,7 @@ import pytest
 
 import settings
 from src.subscribe import create_subscription
-from tests.data.subscribe import Subscribe
+from tests.data.subscription import Subscription
 from utils.api_requests import send_request
 
 
@@ -19,7 +19,7 @@ def fill_subscriptions_list(request, clean):
 
     for index in range(settings.LIST_LENGTH):
         create_subscription(
-            subcription=Subscribe(
+            subcription=Subscription(
                 email=f"email{index+1}@example.com",
                 name=f"name{index+1} lastname{index+1}"
             )

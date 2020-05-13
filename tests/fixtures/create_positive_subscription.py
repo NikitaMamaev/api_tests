@@ -6,7 +6,7 @@ import hamcrest as hc
 import pytest
 
 from src.subscribe import create_subscription
-from tests.data.subscribe import positive
+from tests.data.subscription import positive
 
 
 @pytest.fixture(scope='function')

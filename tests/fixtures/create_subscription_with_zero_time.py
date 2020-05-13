@@ -6,7 +6,7 @@ import hamcrest as hc
 import pytest
 
 from src.subscribe import create_subscription
-from tests.data.subscribe import zero_time
+from tests.data.subscription import zero_time
 
 
 @pytest.fixture(scope='function')
