@@ -28,7 +28,8 @@ def fill_subscriptions_list(request):
 
     hc.assert_that(
         actual=send_request(),
-        matcher=hc.has_length(settings.LIST_LENGTH)
+        matcher=hc.has_length(settings.LIST_LENGTH),
+        reason="The list is not full"
     )
 
     request.addfinalizer(delete_subscriptions)

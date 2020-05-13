@@ -38,12 +38,6 @@ def test_create_sixth_subscription(fill_subscriptions_list):
     Sixth subscription creating test
     """
 
-    hc.assert_that(
-        actual=send_request(),
-        matcher=hc.has_length(settings.LIST_LENGTH),
-        reason="The list is not full"
-    )
-
     create_subscription(positive)
 
     subscription_list = send_request()
