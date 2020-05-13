@@ -2,6 +2,7 @@
 Positive tests of subscriptions creating
 """
 
+import dateutil.parser
 import hamcrest as hc
 import pytest
 
@@ -19,13 +20,24 @@ def test_creating_with_correct_data(create_positive_subscription):
     Test of creating subscription with correct data
     """
 
+    subscription_list = send_request()
+
     hc.assert_that(
-        actual=send_request(),
+        actual=subscription_list,
         matcher=hc.has_item(hc.has_entries({
             'email': positive.email,
             'name': positive.name
         })),
         reason="New subscription not added at list"
+    )
+
+    expiration_date = dateutil.parser.parse(subscription_list[0]['expired_at'])
+    creation_date = dateutil.parser.parse(subscription_list[0]['created_at'])
+
+    hc.assert_that(
+        actual=f"{(expiration_date-creation_date).days}d",
+        matcher=hc.equal_to(positive.time.replace(" ", "")),
+        reason="Invalid subscription time"
     )
 
 
