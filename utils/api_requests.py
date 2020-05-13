@@ -38,9 +38,9 @@ def send_request(
     )
 
     hc.assert_that(
-        response.status_code,
-        hc.equal_to(200),
-        f"response = {response.content}; status_code = {response.status_code}"
+        actual=response.status_code,
+        matcher=hc.equal_to(200),
+        reason=f"response = {response.content}; status_code = {response.status_code}"
     )
 
     return response.json()

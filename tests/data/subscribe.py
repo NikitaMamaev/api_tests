@@ -18,5 +18,11 @@ class Subscribe:
 positive = Subscribe(
     email="subscribe@example.com",
     name="Name Lastname",
-    time="-1d"
+    time="1d"
+)
+
+negative_email = Subscribe(
+    email="subs@@@cribe@example.com",
+    name="Name Lastname",
+    time="1d"
 )

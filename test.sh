@@ -1,3 +1,3 @@
 export PYTHONPATH=${PWD}
 
-pytest -sv tests/*
+pytest -v tests/*
