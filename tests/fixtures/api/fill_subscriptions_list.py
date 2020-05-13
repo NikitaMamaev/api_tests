@@ -21,8 +21,7 @@ def fill_subscriptions_list(request):
         create_subscription(
             subcription=Subscribe(
                 email=f"email{index+1}@example.com",
-                name=f"name{index+1} lastname{index+1}",
-                time="1d"
+                name=f"name{index+1} lastname{index+1}"
             )
         )
 

@@ -37,6 +37,7 @@ confidence=
 disable=
     bad-continuation,
     import-error,
+    invalid-name,
     no-member,
     unused-argument
 

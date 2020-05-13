@@ -10,6 +10,7 @@ from utils.api_requests import send_request
 
 
 @pytest.mark.api
+@pytest.mark.deleting
 def test_subscribe_deleting(create_positive_subscription):
     """
     Test for deleting all subscriptions

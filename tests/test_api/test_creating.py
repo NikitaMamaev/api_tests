@@ -7,11 +7,15 @@ import pytest
 
 import settings
 from src.subscribe import create_subscription
-from tests.data.subscribe import positive
+from tests.data.subscribe import \
+    empty_email, empty_name, empty_time, long_time,\
+    negative_email, negative_time, positive
 from utils.api_requests import send_request
 
 
 @pytest.mark.api
+@pytest.mark.creating
+@pytest.mark.positive
 def test_positive_creating(create_positive_subscription):
     """
     Positive subscribe test
@@ -20,19 +24,22 @@ def test_positive_creating(create_positive_subscription):
     hc.assert_that(
         actual=send_request(),
         matcher=hc.has_length(1),
-        reason="Wrong length of the list"
+        reason="Incorrect length of the list"
     )
 
     hc.assert_that(
-        actual=send_request()[0],
-        matcher=hc.has_entries({
+        actual=send_request(),
+        matcher=hc.has_item(hc.has_entries({
             'email': positive.email,
             'name': positive.name
-        }),
+        })),
         reason="New subscription not added at list"
     )
 
+
 @pytest.mark.api
+@pytest.mark.creating
+@pytest.mark.positive
 def test_create_sixth_subscription(fill_subscriptions_list):
     """
     Sixth subscription creating test
@@ -56,7 +63,7 @@ def test_create_sixth_subscription(fill_subscriptions_list):
     hc.assert_that(
         actual=subscription_list,
         matcher=hc.has_length(settings.LIST_LENGTH),
-        reason="Wrong length of the list"
+        reason="Incorrect length of the list"
     )
 
     hc.assert_that(
@@ -68,4 +75,91 @@ def test_create_sixth_subscription(fill_subscriptions_list):
             })
         )),
         reason="First subscription has not left the list"
+    )
+
+@pytest.mark.api
+@pytest.mark.creating
+@pytest.mark.positive
+def test_creating_with_empty_name(create_subscription_with_empty_name):
+    """
+    Create subscription with empty name
+    """
+
+    hc.assert_that(
+        actual=send_request(),
+        matcher=hc.has_length(1),
+        reason="Incorrect length of the list"
+    )
+
+    hc.assert_that(
+        actual=send_request(),
+        matcher=hc.has_item(hc.has_entries({
+            'email': empty_name.email,
+            'name': empty_name.name
+        })),
+        reason="New subscription not added at list"
+    )
+
+@pytest.mark.api
+@pytest.mark.creating
+@pytest.mark.negative
+def test_creating_with_empty_email():
+    """
+    Try to create subscription with empty email
+    """
+
+    response = create_subscription(empty_email)
+
+    hc.assert_that(
+        actual=response,
+        matcher=hc.has_entries({
+            "error": hc.all_of(
+                hc.contains_string("ValidationError"),
+                hc.contains_string("Invalid email address")
+            )
+        }),
+        reason="ValidationError was expected"
+    )
+
+    hc.assert_that(
+        actual=send_request(),
+        matcher=hc.not_(hc.has_item(
+            hc.has_entries({
+                'email': empty_email.email,
+                'name': empty_email.name,
+            })
+        )),
+        reason="There is subscription with empty email in the list"
+    )
+
+@pytest.mark.api
+@pytest.mark.creating
+@pytest.mark.negative
+def test_creating_with_negative_email():
+    """
+    Try to create subscription with negative email
+    """
+
+    response = create_subscription(negative_email)
+
+    hc.assert_that(
+        actual=response,
+        matcher=hc.has_entries({
+            "error": hc.all_of(
+                hc.contains_string("ValidationError"),
+                hc.contains_string("Invalid email address")
+            )
+        }),
+        reason="ValidationError was expected"
+    )
+
+    hc.assert_that(
+        actual=send_request(),
+        matcher=hc.not_(hc.has_item(
+            hc.has_entries({
+                'email': negative_email.email,
+                'name': negative_email.name,
+            })
+        )),
+        reason="There is subscription with incorrect data in the list"
     )
