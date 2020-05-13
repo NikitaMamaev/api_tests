@@ -7,9 +7,8 @@ import pytest
 
 from src.subscribe import create_subscription
 from tests.data.subscribe import \
-    empty_email, empty_name, empty_time, long_time,\
-    negative_email, negative_name, negative_time,\
-    zero_time
+    empty_email, empty_name, empty_time, zero_time,\
+    negative_email, negative_name, negative_time
 from utils.api_requests import send_request
 
 

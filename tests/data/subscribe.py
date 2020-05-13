@@ -53,12 +53,6 @@ empty_time = Subscribe(
     time=""
 )
 
-long_time = Subscribe(
-    email="long_time@example.com",
-    name="Long Time",
-    time="65536d"
-)
-
 zero_time = Subscribe(
     email="zero_time@example.com",
     name="Zero Time",
