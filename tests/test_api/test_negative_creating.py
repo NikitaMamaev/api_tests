@@ -5,70 +5,39 @@ Subscribe creating tests
 import hamcrest as hc
 import pytest
 
-import settings
 from src.subscribe import create_subscription
 from tests.data.subscribe import \
     empty_email, empty_name, empty_time, long_time,\
-    negative_email, negative_time, positive
+    negative_email, negative_name, negative_time,\
+    zero_time
 from utils.api_requests import send_request
 
 
 @pytest.mark.api
 @pytest.mark.creating
-@pytest.mark.positive
-def test_positive_creating(create_positive_subscription):
+@pytest.mark.negative
+def test_creating_with_zero_time(create_subscription_with_zero_time):
     """
-    Positive subscribe test
+    Creating with zero time
     """
-
-    hc.assert_that(
-        actual=send_request(),
-        matcher=hc.has_item(hc.has_entries({
-            'email': positive.email,
-            'name': positive.name
-        })),
-        reason="New subscription not added at list"
-    )
-
-
-@pytest.mark.api
-@pytest.mark.creating
-@pytest.mark.positive
-def test_create_sixth_subscription(fill_subscriptions_list):
-    """
-    Sixth subscription creating test
-    """
-
-    create_subscription(positive)
 
     subscription_list = send_request()
 
     hc.assert_that(
         actual=subscription_list,
-        matcher=hc.has_item(
-            hc.has_entries({
-                    'email': positive.email,
-                    'name': positive.name
-                })
-        ),
+        matcher=hc.has_item(hc.has_entries({
+            'email': zero_time.email,
+            'name': zero_time.name
+        })),
         reason="New subscription not added at list"
     )
 
     hc.assert_that(
-        actual=subscription_list,
-        matcher=hc.has_length(settings.LIST_LENGTH),
-        reason="Incorrect length of the list"
-    )
-
-    hc.assert_that(
-        actual=subscription_list,
-        matcher=hc.not_(hc.has_item(
-            hc.has_entries({
-                'email': 'email1@example.com',
-                'name': 'name1 lastname1',
-            })
-        )),
-        reason="First subscription has not left the list"
+        actual=subscription_list[0]['created_at'],
+        matcher=hc.equal_to(
+            subscription_list[0]['expired_at']
+        ),
+        reason="Subscription time is not equal to zero"
     )
 
 
@@ -201,6 +170,39 @@ def test_creating_with_negative_email(clean):
             })
         )),
         reason="There is subscription with incorrect email in the list"
+    )
+
+
+@pytest.mark.api
+@pytest.mark.creating
+@pytest.mark.negative
+def test_creating_with_nagative_name(clean):
+    """
+    Try to create subscription with incorrect name
+    """
+
+    response = create_subscription(negative_name)
+
+    hc.assert_that(
+        actual=response,
+        matcher=hc.has_entries({
+            "error": hc.all_of(
+                hc.contains_string("ValidationError"),
+                hc.matches_regexp(r"Invalid.*name")
+            )
+        }),
+        reason="ValidationError was expected"
+    )
+
+    hc.assert_that(
+        actual=send_request(),
+        matcher=hc.not_(hc.has_item(
+            hc.has_entries({
+                'email': negative_name.email,
+                'name': negative_name.name,
+            })
+        )),
+        reason="There is subscription with incorrect name in the list"
     )
 
 

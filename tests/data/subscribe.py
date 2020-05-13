@@ -8,7 +8,7 @@ from dataclasses import dataclass
 @dataclass
 class Subscribe:
     """
-    Supscribe parameters
+    Subscribe parameters
     """
     email: str = ""
     name: str = ""
@@ -16,8 +16,8 @@ class Subscribe:
 
 
 positive = Subscribe(
-    email="subscribe@example.com",
-    name="Name Lastname"
+    email="positive@example.com",
+    name="Positive Name"
 )
 
 negative_email = Subscribe(
@@ -25,10 +25,16 @@ negative_email = Subscribe(
     name="Incorrect Email"
 )
 
+negative_name = Subscribe(
+    email="incorrect_name@example.com",
+    name="./*#@!%|^&*(),'`~;:+-}_=[]?\"<>{",
+    time="incorrect name"
+)
+
 negative_time = Subscribe(
-    email="negative_time@example.com",
-    name="Negative Time",
-    time="negative time"
+    email="incorrect_time@example.com",
+    name="Incorrect Time",
+    time="incorrect time"
 )
 
 empty_email = Subscribe(
@@ -51,4 +57,10 @@ long_time = Subscribe(
     email="long_time@example.com",
     name="Long Time",
     time="65536d"
+)
+
+zero_time = Subscribe(
+    email="zero_time@example.com",
+    name="Zero Time",
+    time="0d"
 )

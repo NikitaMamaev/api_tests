@@ -6,7 +6,7 @@ import hamcrest as hc
 import pytest
 
 import settings
-from src.subscribe import create_subscription, delete_subscriptions
+from src.subscribe import create_subscription
 from tests.data.subscribe import Subscribe
 from utils.api_requests import send_request
 
