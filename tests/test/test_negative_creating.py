@@ -1,15 +1,31 @@
 """
-Subscribe creating tests
+Subscription creating tests
 """
 
 import hamcrest as hc
 import pytest
 
-from src.subscribe import create_subscription
+from src.subscription import create_subscription
 from tests.data.subscription import \
-    empty_email, empty_name, empty_time,\
-    negative_email, negative_name, negative_time
+    empty_email, empty_name, empty_time, positive,\
+    incorrect_email, incorrect_name, incorrect_time, zero_time
 from utils.api_requests import send_request
+
+
+@pytest.mark.creating
+@pytest.mark.negative
+def test_creating_existing_subscription(create_correct_subscription):
+    """
+    Try to create subscription with existing email
+    """
+
+    create_subscription(positive)
+
+    hc.assert_that(
+        actual=send_request(),
+        matcher=hc.has_length(1),
+        reason="Subscription with existing email should not be created!"
+    )
 
 
 @pytest.mark.creating
@@ -110,12 +126,12 @@ def test_creating_with_empty_time(clean):
 
 @pytest.mark.creating
 @pytest.mark.negative
-def test_creating_with_negative_email(clean):
+def test_creating_with_incorrect_email(clean):
     """
     Try to create subscription with incorrect email
     """
 
-    response = create_subscription(negative_email)
+    response = create_subscription(incorrect_email)
 
     hc.assert_that(
         actual=response,
@@ -132,8 +148,8 @@ def test_creating_with_negative_email(clean):
         actual=send_request(),
         matcher=hc.not_(hc.has_item(
             hc.has_entries({
-                'email': negative_email.email,
-                'name': negative_email.name,
+                'email': incorrect_email.email,
+                'name': incorrect_email.name,
             })
         )),
         reason="There is subscription with incorrect email in the list"
@@ -147,7 +163,7 @@ def test_creating_with_nagative_name(clean):
     Try to create subscription with incorrect name
     """
 
-    response = create_subscription(negative_name)
+    response = create_subscription(incorrect_name)
 
     hc.assert_that(
         actual=response,
@@ -164,8 +180,8 @@ def test_creating_with_nagative_name(clean):
         actual=send_request(),
         matcher=hc.not_(hc.has_item(
             hc.has_entries({
-                'email': negative_name.email,
-                'name': negative_name.name,
+                'email': incorrect_name.email,
+                'name': incorrect_name.name,
             })
         )),
         reason="There is subscription with incorrect name in the list"
@@ -174,19 +190,19 @@ def test_creating_with_nagative_name(clean):
 
 @pytest.mark.creating
 @pytest.mark.negative
-def test_creating_with_negative_time(clean):
+def test_creating_with_incorrect_time(clean):
     """
     Try to create subscription with incorrect time
     """
 
-    response = create_subscription(negative_time)
+    response = create_subscription(incorrect_time)
 
     hc.assert_that(
         actual=response,
         matcher=hc.has_entries({
             "error": hc.all_of(
                 hc.contains_string("ValidationError"),
-                hc.matches_regexp(r"Invalid.*email")
+                hc.matches_regexp(r"Invalid.*time")
             )
         }),
         reason="ValidationError was expected"
@@ -196,9 +212,41 @@ def test_creating_with_negative_time(clean):
         actual=send_request(),
         matcher=hc.not_(hc.has_item(
             hc.has_entries({
-                'email': negative_time.email,
-                'name': negative_time.name,
+                'email': incorrect_time.email,
+                'name': incorrect_time.name,
             })
         )),
         reason="There is subscription with incorrect time in the list"
+    )
+
+
+@pytest.mark.creating
+@pytest.mark.negative
+def test_creating_with_zero_time(clean):
+    """
+    Creating with zero time
+    """
+
+    response = create_subscription(zero_time)
+
+    hc.assert_that(
+        actual=response,
+        matcher=hc.has_entries({
+            "error": hc.all_of(
+                hc.contains_string("ValidationError"),
+                hc.matches_regexp(r"Invalid.*time")
+            )
+        }),
+        reason="ValidationError was expected"
+    )
+
+    hc.assert_that(
+        actual=send_request(),
+        matcher=hc.not_(hc.has_item(
+            hc.has_entries({
+                'email': zero_time.email,
+                'name': zero_time.name,
+            })
+        )),
+        reason="There is subscription with zero time in the list"
     )

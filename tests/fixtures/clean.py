@@ -1,10 +1,10 @@
 """
-Delete subscriptions before testing
+Delete subscriptions before and after testing
 """
 
 import pytest
 
-from src.subscribe import delete_subscriptions
+from src.subscription import delete_subscriptions
 from utils.api_requests import send_request
 
 

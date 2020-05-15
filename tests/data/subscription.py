@@ -32,18 +32,18 @@ empty_time = Subscription(
     time=""
 )
 
-negative_email = Subscription(
+incorrect_email = Subscription(
     email="incorrect_email",
     name="Incorrect Email"
 )
 
-negative_name = Subscription(
+incorrect_name = Subscription(
     email="incorrect_name@example.com",
     name="./*#@!%|^&*(),'`~;:+-}_=[]?\"<>{",
     time="incorrect name"
 )
 
-negative_time = Subscription(
+incorrect_time = Subscription(
     email="incorrect_time@example.com",
     name="Incorrect Time",
     time="incorrect time"

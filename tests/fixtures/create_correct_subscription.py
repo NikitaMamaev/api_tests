@@ -5,14 +5,14 @@ Create subscription with positive data
 import hamcrest as hc
 import pytest
 
-from src.subscribe import create_subscription
+from src.subscription import create_subscription
 from tests.data.subscription import positive
 
 
 @pytest.fixture(scope='function')
-def create_positive_subscription(request, clean):
+def create_correct_subscription(request, clean):
     """
-    Create subscription before test
+    Create subscription before testing
     """
 
     response = create_subscription(positive)

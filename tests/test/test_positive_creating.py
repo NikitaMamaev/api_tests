@@ -7,14 +7,14 @@ import hamcrest as hc
 import pytest
 
 import settings
-from src.subscribe import create_subscription
-from tests.data.subscription import positive, zero_time
+from src.subscription import create_subscription
+from tests.data.subscription import positive
 from utils.api_requests import send_request
 
 
 @pytest.mark.creating
 @pytest.mark.positive
-def test_creating_with_correct_data(create_positive_subscription):
+def test_creating_with_correct_data(create_correct_subscription):
     """
     Test of creating subscription with correct data
     """
@@ -37,33 +37,6 @@ def test_creating_with_correct_data(create_positive_subscription):
         actual=f"{(expiration_date-creation_date).days}d",
         matcher=hc.equal_to(positive.time.replace(" ", "")),
         reason="Invalid subscription time"
-    )
-
-
-@pytest.mark.creating
-@pytest.mark.positive
-def test_creating_with_zero_time(create_subscription_with_zero_time):
-    """
-    Creating with zero time
-    """
-
-    subscription_list = send_request()
-
-    hc.assert_that(
-        actual=subscription_list,
-        matcher=hc.has_item(hc.has_entries({
-            'email': zero_time.email,
-            'name': zero_time.name
-        })),
-        reason="New subscription not added at list"
-    )
-
-    hc.assert_that(
-        actual=subscription_list[0]['created_at'],
-        matcher=hc.equal_to(
-            subscription_list[0]['expired_at']
-        ),
-        reason="Subscription time is not equal to zero"
     )
 
 

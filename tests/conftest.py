@@ -4,7 +4,6 @@ Fixtures list
 
 pytest_plugins = [
     "fixtures.clean",
-    "fixtures.create_positive_subscription",
-    "fixtures.create_subscription_with_zero_time",
+    "fixtures.create_correct_subscription",
     "fixtures.fill_subscriptions_list"
 ]
