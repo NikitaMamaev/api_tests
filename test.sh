@@ -1,3 +1,3 @@
 export PYTHONPATH=${PWD}
 
-pytest -v tests/*
+pytest -v -m "positive or negative" tests/*
