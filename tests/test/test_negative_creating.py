@@ -158,7 +158,7 @@ def test_creating_with_incorrect_email(clean):
 
 @pytest.mark.creating
 @pytest.mark.negative
-def test_creating_with_nagative_name(clean):
+def test_creating_with_incorrect_name(clean):
     """
     Try to create subscription with incorrect name
     """
