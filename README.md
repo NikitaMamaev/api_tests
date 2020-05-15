@@ -99,6 +99,32 @@ PYTHONPATH=${PWD} pytest -v tests/*
 
 ![tests-results](https://i.ibb.co/pWwnFP8/2020-05-15-21-08-20.png)
 
+Следующие тесты выявили **ошибки**:
+
+* Создание подписки с существующим `email`
+
+При создании двух подписок с одинаковыми данными создаётся две записи вопреки предположению о том, что в таблице не может быть записей с двумя одинаковыми `email`.
+
+* Создание подписки с пустым `name` (`test_creating_with_empty_name`)
+
+Подписка с пустым полем `name` создаётся, несмотря на условие, указанное в баннере страницы.
+
+* Создание подписки с пустым `time` (`test_creating_with_empty_time`)
+
+Подписка с пустым полем `time` создаётся, несмотря на условие, указанное в баннере страницы.
+
+* Создание подписки с некорректным `name` (`test_creating_with_incorrect_name`)
+
+Подписка с некорректным значением `name` создаётся
+
+* Создание подписки с некорректным `time` (`test_creating_with_incorrect_time`)
+
+Подписка с некорректным значением `time` создаётся.
+
+* Создание подписки с нулевым `time` (`test_creating_with_zero_time`)
+
+Подписка с нулевым значением `time` создаётся
+
 Описание полученных ошибок (вывод `pytest`):
 
 ```sh
@@ -274,29 +300,3 @@ FAILED tests/test/test_negative_creating.py::test_creating_with_incorrect_name -
 FAILED tests/test/test_negative_creating.py::test_creating_with_incorrect_time - AssertionError: ValidationError was expected
 FAILED tests/test/test_negative_creating.py::test_creating_with_zero_time - AssertionError: ValidationError was expected
 ```
-
-Следующие тесты выявили **ошибки**:
-
-* Создание подписки с существующим `email`
-
-При создании двух подписок с одинаковыми данными создаётся две записи вопреки предположению о том, что в таблице не может быть записей с двумя одинаковыми `email`.
-
-* Создание подписки с пустым `name` (`test_creating_with_empty_name`)
-
-Подписка с пустым полем `name` создаётся, несмотря на условие, указанное в баннере страницы.
-
-* Создание подписки с пустым `time` (`test_creating_with_empty_time`)
-
-Подписка с пустым полем `time` создаётся, несмотря на условие, указанное в баннере страницы.
-
-* Создание подписки с некорректным `name` (`test_creating_with_incorrect_name`)
-
-Подписка с некорректным значением `name` создаётся
-
-* Создание подписки с некорректным `time` (`test_creating_with_incorrect_time`)
-
-Подписка с некорректным значением `time` создаётся.
-
-* Создание подписки с нулевым `time` (`test_creating_with_zero_time`)
-
-Подписка с нулевым значением `time` создаётся
