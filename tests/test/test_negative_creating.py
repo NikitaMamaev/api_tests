@@ -1,5 +1,5 @@
 """
-Subscription creating tests
+Tests of subscription creating with incorrect data
 """
 
 import hamcrest as hc
